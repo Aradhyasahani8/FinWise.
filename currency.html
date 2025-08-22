@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Live Currency Converter</title>
+  <style>
+    /* Modern Professional UI */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+      padding: 40px;
+      max-width: 500px;
+      margin: auto;
+      border-radius: 12px;
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      text-align: center;
+      color: #352925;
+      margin-bottom: 30px;
+      font-size: 24px;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      margin-bottom: 5px;
+      font-weight: 600;
+      color: #352925;
+    }
+
+    input, select {
+      padding: 12px;
+      width: 100%;
+      border: 1px solid #d9e2ec;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      background-color: #fff;
+    }
+
+    input:focus, select:focus {
+      border-color: #352925;
+      box-shadow: 0 0 0 3px #352925;
+      outline: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 25px;
+      background: #352925;
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #352925;
+    }
+
+    #result {
+      margin-top: 30px;
+      padding: 15px;
+      background-color: #e3f8ff;
+      border-left: 6px solid #352925;
+      border-radius: 6px;
+      font-size: 18px;
+      color: #352925;
+      text-align: center;
+      transition: all 0.3s ease-in-out;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Live Currency Converter</h2>
+
+  <label>Amount:</label>
+  <input type="number" id="amount" placeholder="Enter amount" />
+
+  <label>From:</label>
+  <select id="fromCurrency"></select>
+
+  <label>To:</label>
+  <select id="toCurrency"></select>
+
+  <button onclick="convertCurrency()">Convert</button>
+
+  <div id="result"></div>
+
+  <script>
+    const apiUrl = 'https://api.exchangerate-api.com/v4/latest/USD';
+
+    // Currency list (with symbols)
+    const currencyList = [
+      { code: "INR", symbol: "₹" },
+      { code: "USD", symbol: "$" },
+      { code: "EUR", symbol: "€" },
+      { code: "GBP", symbol: "£" },
+      { code: "JPY", symbol: "¥" },
+      { code: "CAD", symbol: "C$" },
+      { code: "AUD", symbol: "A$" },
+      { code: "CHF", symbol: "CHF" },
+      { code: "CNY", symbol: "¥" },
+      { code: "ZAR", symbol: "R" }
+    ];
+
+    let exchangeRates = {};
+
+    async function fetchExchangeRates() {
+      try {
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+        const allRates = data.rates;
+
+        // Filter only needed currencies
+        exchangeRates = {};
+        currencyList.forEach(c => {
+          if (allRates[c.code]) {
+            exchangeRates[c.code] = allRates[c.code];
+          }
+        });
+
+        populateCurrencyOptions();
+      } catch (error) {
+        document.getElementById('result').textContent = 'Error fetching exchange rates.';
+        console.error('Error:', error);
+      }
+    }
+
+    function populateCurrencyOptions() {
+      const fromSelect = document.getElementById('fromCurrency');
+      const toSelect = document.getElementById('toCurrency');
+
+      fromSelect.innerHTML = '';
+      toSelect.innerHTML = '';
+
+      currencyList.forEach(currency => {
+        const optionFrom = document.createElement('option');
+        optionFrom.value = currency.code;
+        optionFrom.textContent = `${currency.symbol} - ${currency.code}`;
+
+        const optionTo = optionFrom.cloneNode(true);
+
+        fromSelect.appendChild(optionFrom);
+        toSelect.appendChild(optionTo);
+      });
+
+      // Default "from" is INR
+      fromSelect.value = 'INR';
+
+      // Random "to" currency (excluding INR)
+      const otherCurrencies = currencyList.filter(c => c.code !== 'INR');
+      const randomTo = otherCurrencies[Math.floor(Math.random() * otherCurrencies.length)];
+      toSelect.value = randomTo.code;
+    }
+
+    function convertCurrency() {
+      const amount = parseFloat(document.getElementById('amount').value);
+      const from = document.getElementById('fromCurrency').value;
+      const to = document.getElementById('toCurrency').value;
+
+      if (isNaN(amount)) {
+        document.getElementById('result').textContent = 'Please enter a valid amount.';
+        return;
+      }
+
+      const fromRate = exchangeRates[from];
+      const toRate = exchangeRates[to];
+      const converted = (amount / fromRate) * toRate;
+
+      const fromSymbol = currencyList.find(c => c.code === from)?.symbol || from;
+      const toSymbol = currencyList.find(c => c.code === to)?.symbol || to;
+
+      document.getElementById('result').textContent =
+        `${fromSymbol}${amount} ${from} = ${toSymbol}${converted.toFixed(2)} ${to}`;
+    }
+
+    window.onload = fetchExchangeRates;
+  </script>
+
+</body>
+</html>
+
+

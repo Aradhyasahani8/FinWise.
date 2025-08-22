@@ -1,0 +1,188 @@
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #d7ccc8, #a1887f);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+/* Container */
+.container {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border-radius: 18px;
+  padding: 30px;
+  width: 100%;
+  max-width: 650px;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(62, 39, 35, 0.4);
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+/* Title */
+h1, h2 {
+  color: #4e342e;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+/* Form Styles */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+input, select {
+  padding: 12px;
+  border: none;
+  border-radius: 12px;
+  outline: none;
+  font-size: 16px;
+  width: 100%;
+  background: #fbe9e7;
+  color: #3e2723;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+input:focus, select:focus {
+  transform: scale(1.02);
+  box-shadow: 0 0 10px rgba(121, 85, 72, 0.6);
+}
+
+/* Buttons */
+button {
+  padding: 12px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #6d4c41, #3e2723);
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+button:hover {
+  background: linear-gradient(135deg, #8d6e63, #4e342e);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(62, 39, 35, 0.4);
+}
+
+/* Transaction List */
+#expenseList, #categoryList, #summaryList {
+  margin-top: 20px;
+  text-align: left;
+}
+
+.item {
+  background: #efebe9;
+  padding: 12px;
+  margin: 8px 0;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 15px;
+  font-weight: 500;
+  color: #3e2723;
+  transition: transform 0.2s;
+}
+
+.item:hover {
+  transform: scale(1.02);
+  background: #d7ccc8;
+}
+
+/* Delete Button */
+.delete-btn {
+  background: #bf360c;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 8px;
+  color: white;
+  font-size: 13px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.delete-btn:hover {
+  background: #d84315;
+}
+
+/* Voice Button */
+.voice-btn {
+  margin-left: 10px;
+  background: #795548;
+  padding: 8px 12px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  transition: 0.3s;
+}
+
+.voice-btn:hover {
+  background: #4e342e;
+}
+
+/* Chart */
+canvas {
+  margin-top: 25px;
+  max-width: 100%;
+  background: #fbe9e7;
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 6px 15px rgba(62, 39, 35, 0.3);
+}
+
+/* Links */
+.nav-links {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+a {
+  text-decoration: none;
+  font-weight: 500;
+  color: #3e2723;
+  transition: 0.3s;
+}
+
+a:hover {
+  color: #d84315;
+}
+
+/* Fade In Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .container {
+    padding: 20px;
+  }
+
+  input, select, button {
+    font-size: 14px;
+  }
+}

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FinWise</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <img src="FinWise.png" alt="logo">
+
+    <!-- Income Input -->
+    <div class="form-section">
+      <h2>Add Income</h2>
+      <input type="text" id="incomeDesc" placeholder="Source">
+      <button onclick="startVoiceInput('incomeDesc')">🎤</button>
+      <input type="number" id="incomeAmount" placeholder="Amount">
+      <button onclick="startVoiceInput('incomeAmount','number')">🎤</button>
+      <button onclick="addIncome()">Add Income</button>
+    </div>
+
+    <!-- Expense Input -->
+    <div class="form-section">
+      <h2>Add Expense</h2>
+      <input type="text" id="expenseDesc" placeholder="Description">
+      <button onclick="startVoiceInput('expenseDesc')">🎤</button>
+      <input type="number" id="expenseAmount" placeholder="Amount">
+      <button onclick="startVoiceInput('expenseAmount','number')">🎤</button>
+      <select id="expenseCategory">
+        <option value="">Select Category</option>
+        <option value="Food">Food</option>
+        <option value="Travel">Travel</option>
+        <option value="Shopping">Shopping</option>
+        <option value="Bills">Bills</option>
+        <option value="Others">Others</option>
+      </select>
+      <button onclick="startVoiceInput('expenseCategory','category')">🎤</button>
+      <button onclick="addExpense()">Add Expense</button>
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav-links">
+      <a href="category.html">View by Category</a>
+      <a href="summary.html">View Summary</a>
+      <a href="currency.html">Currency Exchange</a>
+      <a href="fg.html">financial Goals</a>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

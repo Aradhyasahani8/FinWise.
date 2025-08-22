@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Financial Goals</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: #f1f5f9;
+      padding: 40px 20px;
+      margin: 0;
+      color: #352925;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 28px;
+      color: #0f172a;
+      margin-bottom: 30px;
+    }
+
+    /* --- Goals Grid --- */
+    .goals-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 25px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    /* --- Card Styling --- */
+    .goal-card {
+      background: white;
+      border-radius: 12px;
+      padding: 30px 20px;
+      text-align: center;
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.06);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+      border: 1px solid #e2e8f0;
+    }
+
+    .goal-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+    }
+
+    .goal-card i {
+      font-size: 38px;
+      color: #352925;
+      margin-bottom: 15px;
+    }
+
+    .goal-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #334155;
+    }
+
+    /* --- Modal Styles --- */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 10;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content {
+      background-color: #ffffff;
+      margin: 6% auto;
+      padding: 25px 20px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 420px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      position: relative;
+      animation: slideDown 0.3s ease;
+    }
+
+    @keyframes slideDown {
+      from {
+        transform: translateY(-40px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .close {
+      color: #888;
+      font-size: 26px;
+      font-weight: bold;
+      position: absolute;
+      top: 12px;
+      right: 18px;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .close:hover {
+      color: #000;
+    }
+
+    input[type="number"],
+    input[type="date"] {
+      width: 100%;
+      padding: 12px;
+      margin-top: 12px;
+      font-size: 14px;
+      border-radius: 6px;
+      border: 1px solid #cbd5e1;
+      background-color: #f9fafb;
+      box-sizing: border-box;
+      transition: border 0.3s;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #352925;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 16px;
+      font-size: 15px;
+      background-color: #352925;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #1e40af;
+    }
+
+    .result {
+      margin-top: 20px;
+      background: #e0f2fe;
+      padding: 18px 15px;
+      border-radius: 8px;
+      border-left: 6px solid #352925;
+      font-size: 15px;
+      color: #0f172a;
+      text-align: left;
+      line-height: 1.6;
+      word-wrap: break-word;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    /* --- Summary Table --- */
+    #summarySection {
+      max-width: 1000px;
+      margin: 50px auto 20px;
+    }
+
+    #summarySection h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 6px 14px #352925;
+      overflow: hidden;
+    }
+
+    th,
+    td {
+      padding: 12px;
+      border-bottom: 1px solid #e2e8f0;
+      text-align: left;
+    }
+
+    thead tr {
+      background-color: #322424;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <h1>My Financial Goals</h1>
+
+  <div class="goals-container">
+    <div class="goal-card" onclick="openGoalModal('New Vehicle')">
+      <i class="fas fa-car"></i>
+      <div class="goal-title">New Vehicle</div>
+    </div>
+    <div class="goal-card" onclick="openGoalModal('New Home')">
+      <i class="fas fa-house"></i>
+      <div class="goal-title">New Home</div>
+    </div>
+    <div class="goal-card" onclick="openGoalModal('Holiday Trip')">
+      <i class="fas fa-plane"></i>
+      <div class="goal-title">Holiday Trip</div>
+    </div>
+    <div class="goal-card" onclick="openGoalModal('Education')">
+      <i class="fas fa-graduation-cap"></i>
+      <div class="goal-title">Education</div>
+    </div>
+    <div class="goal-card" onclick="openGoalModal('Emergency')">
+      <i class="fas fa-triangle-exclamation"></i>
+      <div class="goal-title">Emergency</div>
+    </div>
+    <div class="goal-card" onclick="openGoalModal('Health Care')">
+      <i class="fas fa-heartbeat"></i>
+      <div class="goal-title">Health Care</div>
+    </div>
+    <div class="goal-card" onclick="openGoalModal('Party')">
+      <i class="fas fa-champagne-glasses"></i>
+      <div class="goal-title">Party</div>
+    </div>
+    <div class="goal-card" onclick="openGoalModal('Kids Spoiling')">
+      <i class="fas fa-baby"></i>
+      <div class="goal-title">Kids Spoiling</div>
+    </div>
+  </div>
+
+  <!-- Summary Section -->
+  <div id="summarySection" style="display:none;">
+    <h2>Summary of Financial Goals</h2>
+    <table id="summaryTable">
+      <thead>
+        <tr>
+          <th>Goal</th>
+          <th>Target Amount (₹)</th>
+          <th>Saved Amount (₹)</th>
+          <th>Remaining Amount (₹)</th>
+          <th>Target Date</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <!-- Modal -->
+  <div id="goalModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h2 id="goalName">Goal Title</h2>
+      <input type="number" id="targetAmount" placeholder="Enter Target Amount" />
+      <input type="number" id="savedAmount" placeholder="Enter Amount Saved" />
+      <input type="date" id="targetDate" />
+      <small style="display: block; margin-top: 6px; color: #6c757d; font-size: 13px;">
+        Target date to complete the goal
+      </small>
+      <button onclick="saveGoal()">Save</button>
+      <div class="result" id="resultBox" style="display: none;"></div>
+    </div>
+  </div>
+
+  <script>
+    let currentGoal = "";
+
+    window.onload = function () {
+      renderSummaryTable();
+    };
+
+    function openGoalModal(goal) {
+      currentGoal = goal;
+      document.getElementById("goalName").innerText = goal;
+      document.getElementById("goalModal").style.display = "block";
+
+      document.getElementById("targetAmount").value = "";
+      document.getElementById("savedAmount").value = "";
+      document.getElementById("targetDate").value = "";
+      document.getElementById("resultBox").style.display = "none";
+    }
+
+    function closeModal() {
+      document.getElementById("goalModal").style.display = "none";
+    }
+
+    function saveGoal() {
+      const target = parseFloat(document.getElementById("targetAmount").value);
+      const saved = parseFloat(document.getElementById("savedAmount").value);
+      const date = document.getElementById("targetDate").value;
+
+      if (isNaN(target) || isNaN(saved) || !date) {
+        alert("Please fill in all fields correctly.");
+        return;
+      }
+
+      const remaining = target - saved;
+
+      const goalData = {
+        target,
+        saved,
+        date,
+        remaining,
+      };
+
+      let allGoals = JSON.parse(localStorage.getItem("financialGoals")) || {};
+      allGoals[currentGoal] = goalData;
+      localStorage.setItem("financialGoals", JSON.stringify(allGoals));
+
+      const resultBox = document.getElementById("resultBox");
+      resultBox.innerHTML = `
+        <strong>${currentGoal}</strong><br>
+        🎯 Target Amount: ₹${target.toLocaleString()} <br>
+        💰 Saved So Far: ₹${saved.toLocaleString()} <br>
+        📅 Target Date: ${date} <br>
+        ❗ Amount Needed: ₹${remaining > 0 ? remaining.toLocaleString() : 0}
+      `;
+      resultBox.style.display = "block";
+
+      renderSummaryTable();
+    }
+
+    function renderSummaryTable() {
+      const allGoals = JSON.parse(localStorage.getItem("financialGoals")) || {};
+      const tbody = document.querySelector("#summaryTable tbody");
+      const summarySection = document.getElementById("summarySection");
+
+      tbody.innerHTML = "";
+
+      if (Object.keys(allGoals).length === 0) {
+        summarySection.style.display = "none";
+        return;
+      }
+
+      summarySection.style.display = "block";
+
+      for (const goal in allGoals) {
+        const { target, saved, remaining, date } = allGoals[goal];
+        const tr = document.createElement("tr");
+
+        tr.innerHTML = `
+          <td>${goal}</td>
+          <td>${target.toLocaleString()}</td>
+          <td>${saved.toLocaleString()}</td>
+          <td>${remaining > 0 ? remaining.toLocaleString() : 0}</td>
+          <td>${date}</td>
+        `;
+
+        tbody.appendChild(tr);
+      }
+    }
+
+    window.onclick = function (event) {
+      const modal = document.getElementById("goalModal");
+      if (event.target === modal) {
+        modal.style.display = "none";
+      }
+    };
+  </script>
+</body>
+</html>
+
